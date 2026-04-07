@@ -10,10 +10,10 @@
       mesa
       intel-media-driver
       libva-utils
-      gstreamer1
-      gstreamer1Plugins.good
-      gstreamer1Plugins.bad
-      gstreamer1Plugins.ugly
+      gst_all_1.gstreamer
+      gst_all_1.gst-plugins-good
+      gst_all_1.gst-plugins-bad
+      gst_all_1.gst-plugins-ugly
       ffmpeg
     ];
     extraPackages32 = with pkgs.pkgsi686Linux; [

@@ -27,7 +27,7 @@
           {
             home-manager = {
               users.banmath.imports =
-                homeImports."linuxmobile@aesthetic";
+                homeImports."banumath@aesthetic";
               extraSpecialArgs = specialArgs;
             };
           }

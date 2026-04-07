@@ -1,4 +1,4 @@
-{inputs, ...}: {
+{inputs, lib, ...}: {
   imports = [
     ./terminal
     inputs.nix-index-db.homeModules.nix-index
@@ -6,8 +6,8 @@
     inputs.dankMaterialShell.homeModules.dankMaterialShell.niri
   ];
   home = {
-    username = "banmath";
-    homeDirectory = "/home/banmath";
+    username = lib.mkDefault "banumath";
+    homeDirectory = lib.mkDefault "/home/banumath";
     stateVersion = "24.05";
   };
 

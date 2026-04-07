@@ -26,7 +26,7 @@
           "${mod}/core/limine.nix"
           {
             home-manager = {
-              users.banmath.imports =
+              users.banumath.imports =
                 homeImports."banumath@aesthetic";
               extraSpecialArgs = specialArgs;
             };

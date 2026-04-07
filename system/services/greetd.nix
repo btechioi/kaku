@@ -4,7 +4,7 @@
     greetd = let
       session = {
         command = "${pkgs.niri}/bin/niri-session";
-        user = "banmath";
+        user = "banumath";
       };
     in {
       enable = true;
@@ -15,7 +15,7 @@
       };
     };
     displayManager.autoLogin = {
-      user = "banmath";
+      user = "banumath";
       enable = true;
     };
   };

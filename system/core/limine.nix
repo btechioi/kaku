@@ -1,20 +1,10 @@
-{
-  lib,
-  pkgs,
-  ...
-}:
-# lanzaboote config
-{
+{lib, ...}: {
   boot.loader = {
-    limine = {
+    systemd-boot = {
       enable = true;
-      efiSupport = true;
-      style.wallpapers = [pkgs.nixos-artwork.wallpapers.simple-dark-gray-bootloader.gnomeFilePath];
-      maxGenerations = 10;
-      secureBoot.enable = false;
+      configurationLimit = 10;
+      editor = false;
     };
-    systemd-boot.enable = lib.mkForce false;
+    efi.canTouchEfiVariables = lib.mkForce true;
   };
-
-  environment.systemPackages = [pkgs.sbctl];
 }

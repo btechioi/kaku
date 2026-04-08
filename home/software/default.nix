@@ -35,7 +35,7 @@
 
     inkscape
     scrcpy
-    (inputs.mynixpkgs.packages.${pkgs.system}.multiviewer.overrideAttrs (old: {
+    (inputs.mynixpkgs.packages.${pkgs.stdenv.hostPlatform.system}.multiviewer.overrideAttrs (old: {
       buildInputs = (old.buildInputs or []) ++ [pkgs.makeWrapper];
       postInstall = ''
         wrapProgram $out/bin/multiviewer \

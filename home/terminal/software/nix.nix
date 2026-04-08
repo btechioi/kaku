@@ -5,7 +5,7 @@
 }:
 # nix tooling
 {
-  home.packages = with pkgs; [alejandra deadnix statix self.packages.${pkgs.system}.repl];
+  home.packages = with pkgs; [alejandra deadnix statix self.packages.${pkgs.stdenv.hostPlatform.system}.repl];
 
   programs.direnv = {
     enable = true;

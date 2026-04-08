@@ -17,7 +17,7 @@
     profiles.default = {
       id = 0;
       name = "dev-edition-default";
-      extensions = with inputs.firefox-addons.packages.${pkgs.system}; [
+      extensions = with inputs.firefox-addons.packages.${pkgs.stdenv.hostPlatform.system}; [
         ublock-origin
         protonpass
         sidebery

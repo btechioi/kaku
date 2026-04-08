@@ -3,7 +3,7 @@
   pkgs,
   ...
 }: let
-  zenFixed = inputs.zen-browser.packages."${pkgs.system}".default.overrideAttrs (old: {
+  zenFixed = inputs.zen-browser.packages."${pkgs.stdenv.hostPlatform.system}".default.overrideAttrs (old: {
     nativeBuildInputs = [
       pkgs.makeWrapper
       pkgs.copyDesktopItems

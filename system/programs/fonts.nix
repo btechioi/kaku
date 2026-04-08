@@ -17,7 +17,7 @@
       nerd-fonts.symbols-only
       cozette
 
-      inputs.self.packages.${pkgs.system}.apple-fonts
+      inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.apple-fonts
     ];
 
     # causes more issues than it solves

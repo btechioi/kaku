@@ -37,7 +37,7 @@
       wiremix
       zfxtop
     ]
-    ++ (with inputs.mynixpkgs.packages.${pkgs.system}; [
+    ++ (with inputs.mynixpkgs.packages.${pkgs.stdenv.hostPlatform.system}; [
       bmm
       dawn
       dfft

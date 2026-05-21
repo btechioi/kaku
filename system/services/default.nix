@@ -23,12 +23,12 @@
     '';
   };
 
-  systemd = {
-    extraConfig = ''
-      DefaultTimeoutStopSec=10s
-      DefaultTimeoutStartSec=10s
-    '';
-    services = {
+  systemd.settings = {
+    Manager.DefaultTimeoutStopSec = "10s";
+    Manager.DefaultTimeoutStartSec = "10s";
+  };
+
+  systemd.services = {
       systemd-udev-settle.enable = false;
       systemd-udevd.serviceConfig.ExecStart = [
         ""

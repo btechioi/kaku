@@ -8,13 +8,18 @@
     initialPassword = "banumath";
     extraGroups = [
       "adbusers"
+      "audio"
+      "dialout"
+      "gamemode"
       "input"
+      "kvm"
+      "libvirtd"
       "networkmanager"
+      "podman"
       "plugdev"
+      "realtime"
       "video"
       "wheel"
-      "kvm"
-      "docker"
     ];
   };
 }

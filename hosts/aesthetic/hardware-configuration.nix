@@ -13,7 +13,7 @@
 
   boot = {
     initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "usb_storage" "sd_mod" "sdhci_pci"];
-    initrd.kernelModules = [];
+    initrd.kernelModules = ["i915"];
     kernelModules = ["kvm-intel"];
     extraModulePackages = [];
   };
@@ -30,11 +30,7 @@
   };
 
   swapDevices = [
-    {
-      device = "/var/lib/swapfile";
-      size = 8 * 1024;
-      randomEncryption.enable = true;
-    }
+    {device = "/dev/disk/by-uuid/05b2a7ca-750d-4da8-a71a-9478e1794b8f";}
   ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";

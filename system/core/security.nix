@@ -68,8 +68,6 @@
   boot.kernelModules = ["tcp_bbr"];
 
   security = {
-    # allow wayland lockers to unlock the screen
-    # userland niceness
     rtkit.enable = true;
     polkit.enable = true;
 
@@ -79,9 +77,19 @@
       wheelNeedsPassword = false;
     };
 
-    # don't ask for password for wheel group
     sudo = {
       wheelNeedsPassword = false;
     };
   };
+
+  security.pam.loginLimits = [
+    { domain = "@realtime"; type = "-"; item = "memlock"; value = "unlimited"; }
+    { domain = "@realtime"; type = "-"; item = "nofile"; value = "1048576"; }
+    { domain = "@realtime"; type = "-"; item = "nproc"; value = "unlimited"; }
+    { domain = "@realtime"; type = "soft"; item = "rtprio"; value = "98"; }
+    { domain = "@realtime"; type = "hard"; item = "rtprio"; value = "99"; }
+    { domain = "@audio"; type = "-"; item = "memlock"; value = "unlimited"; }
+    { domain = "@audio"; type = "-"; item = "rtprio"; value = "75"; }
+    { domain = "@video"; type = "-"; item = "nice"; value = "-10"; }
+  ];
 }

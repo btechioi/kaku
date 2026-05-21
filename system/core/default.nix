@@ -23,7 +23,6 @@
 
   console.keyMap = "us";
 
-  # don't touch this
   system.stateVersion = lib.mkDefault "24.05";
   system = {
     switch.enable = true;
@@ -33,10 +32,16 @@
   time.timeZone = lib.mkDefault "Asia/Colombo";
   time.hardwareClockInLocalTime = lib.mkDefault true;
 
-  # compresses half the ram for use as swap
   zramSwap = {
     enable = true;
     algorithm = "zstd";
-    memoryPercent = 25;
+    memoryPercent = 50;
+  };
+
+  boot.kernel.sysctl = {
+    "vm.nr_hugepages" = 128;
+    "vm.hugetlb_shm_group" = 0;
+    "vm.admin_reserve_kbytes" = 8192;
+    "vm.user_reserve_kbytes" = 16384;
   };
 }

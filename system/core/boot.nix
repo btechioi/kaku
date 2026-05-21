@@ -29,9 +29,11 @@
     };
 
     plymouth.enable = true;
+    plymouth.themePackages = [pkgs.plymouth_theme_bgrt];
 
     tmp = {
       useTmpfs = true;
+      tmpfsSize = "25%";
       cleanOnBoot = true;
     };
   };

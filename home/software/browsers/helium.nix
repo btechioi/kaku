@@ -6,7 +6,7 @@
   chromiumFlags = import ./chromium-flags.nix {inherit pkgs;};
 in {
   home.packages = [
-    inputs.mynixpkgs.packages.${pkgs.stdenv.hostPlatform.system}.helium
+    inputs.helium.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
 
   home.sessionVariables = chromiumFlags.sessionVariables;

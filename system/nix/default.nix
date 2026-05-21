@@ -30,10 +30,11 @@
       builders-use-substitutes = true;
       experimental-features = ["nix-command" "flakes"];
       flake-registry = "/etc/nix/registry.json";
+      min-free = 5 * 1024 * 1024 * 1024;
+      max-free = 10 * 1024 * 1024 * 1024;
 
-      # for direnv GC roots
       keep-derivations = true;
-      keep-outputs = true;
+      keep-outputs = false;
 
       trusted-users = ["root" "@wheel"];
       accept-flake-config = false;

@@ -1,6 +1,5 @@
 _: {
-  # nh default flake
-  environment.variables.NH_FLAKE = "/home/banumath/Dev/nixland";
+  environment.variables.NH_FLAKE = "/home/banumath/kaku";
 
   programs.nh = {
     enable = true;

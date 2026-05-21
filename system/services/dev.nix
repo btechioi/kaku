@@ -37,9 +37,6 @@
     ripgrep
     fd
     
-    # Container tools
-    podman
-    
     # Misc
     jq
     curl

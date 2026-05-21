@@ -7,45 +7,48 @@
   imports = [./hardware-configuration.nix];
 
   boot = {
-    # load modules on boot
-    kernelModules = ["i915" "v4l2loopback" "i2c-dev" "efivarfs"];
+    kernelModules = ["i915" "v4l2loopback" "i2c-dev" "efivarfs" "dell-smbios" "dell-wmi" "dell-laptop" "tcp_bbr"];
     kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
     extraModulePackages = with config.boot.kernelPackages; [v4l2loopback];
     kernelParams = [
-      "intel_pstate=enable" # Enable Intel P-state CPU scaling driver
-      "intel_iommu=on" # Enable Intel IOMMU support
-      "iommu=pt" # Use passthrough IOMMU mode for lower latency
-      "mitigations=off" # Disable CPU security mitigations (improves performance, reduces security)
-      "processor.max_cstate=0" # Disable deep CPU idle states for maximum responsiveness
-      "idle=poll" # Prefer polling idle state for max CPU availability
-      "intel_idle.max_cstate=1" # Restrict Intel idle states to prevent power-saving latency
-      "ideapad_laptop" # Allow Lenovo IdeaPad v4 Dynamic Thermal Control
-      # "nvme_core.default_ps_max_latency_us=0" # Set NVMe power state latency to minimum (max performance)
+      "intel_pstate=enable"
+      "intel_iommu=on"
+      "iommu=pt"
+      "mitigations=off"
+      "intel_idle.max_cstate=4"
       "preempt=voluntary"
       "nowatchdog"
       "psi=1"
+      "split_lock_detect=off"
+      "elevator=none"
 
-      "randomize_kstack_offset=on" # Randomize kernel stack offset on each syscall (mitigates some exploits)
-      "vsyscall=none" # Disable vsyscall (removes legacy syscall interface, improves security)
-      "slab_nomerge" # Disable merging of similar SLAB caches (hardens against some heap attacks)
-      "module.sig_enforce=1" # Only allow loading kernel modules with valid signatures (prevents unsigned modules)
-      "lockdown=confidentiality" # Enable kernel lockdown in confidentiality mode (restricts kernel access even for root)
-      "page_poison=1" # Fill freed memory pages with poison value (helps detect use-after-free bugs)
-      "page_alloc.shuffle=1" # Randomize page allocator order (mitigates some memory corruption attacks)
-      "sysrq_always_enabled=0" # Disable magic SysRq key entirely (prevents low-level system commands)
-      "rootflags=noatime" # Mount root filesystem with noatime (improves performance, disables file access time updates)
-      "lsm=landlock,lockdown,yama,integrity,apparmor,bpf,tomoyo,selinux" # Enable and order Linux Security Modules (stacked LSMs for security)
-      "fbcon=nodefer" # Do not defer kernel messages to framebuffer console (shows messages immediately)
+      "randomize_kstack_offset=on"
+      "vsyscall=none"
+      "slab_nomerge"
+      "module.sig_enforce=1"
+      "lockdown=confidentiality"
+      "page_poison=1"
+      "page_alloc.shuffle=1"
+      "sysrq_always_enabled=0"
+      "rootflags=noatime"
+      "lsm=landlock,lockdown,yama,integrity,apparmor,bpf,tomoyo,selinux"
+      "fbcon=nodefer"
 
-      # Additional security hardening for HSI compliance (validated)
-      "init_on_alloc=1" # Initialize allocated memory
-      "init_on_free=1" # Initialize freed memory
+      "init_on_alloc=1"
+      "init_on_free=1"
+
+      "i915.enable_guc=3"
+      "i915.enable_fbc=1"
+      "i915.fastboot=1"
     ];
     kernel.sysctl = {
-      "vm.swappiness" = 10; # Lower tendency to swap (default is 60)
-      "vm.vfs_cache_pressure" = 50; # Reduce cache pressure (default is 100)
-      "vm.dirty_ratio" = 10; # Lower max % of dirty memory before writeback (default is 20)
-      "vm.dirty_background_ratio" = 5; # Lower % of dirty memory to start background writeback (default is 10)
+      "vm.swappiness" = 30;
+      "vm.vfs_cache_pressure" = 75;
+      "vm.dirty_ratio" = 10;
+      "vm.dirty_background_ratio" = 5;
+      "vm.compaction_proactiveness" = 50;
+      "vm.page_lock_unfairness" = 1;
+      "vm.max_map_count" = 2147483642;
 
       "kernel.nmi_watchdog" = 0; # Disable NMI watchdog (slightly improves performance)
 
@@ -132,7 +135,34 @@
     '';
   };
 
-  networking.hostName = "My-Laptop";
+  networking.hostName = "nixos";
+
+  environment.sessionVariables = {
+    EDITOR = "zed";
+    VISUAL = "zed";
+  };
+
+  programs.nix-ld = {
+    enable = true;
+    libraries = with pkgs; [
+      stdenv.cc.cc
+      zlib
+      zstd
+      openssl
+      curl
+      libGL
+      glib
+      freetype
+      fontconfig
+      alsa-lib
+      libxkbcommon
+      wayland
+      libglvnd
+      pipewire
+      libpulseaudio
+      udev
+    ];
+  };
 
   nixpkgs.config = {
     allowUnfree = true;
@@ -172,8 +202,9 @@
 
   environment.systemPackages = with pkgs; [
     cryptsetup
-    docker
-    (pkgs."docker-compose")
     sunshine
+    openjdk21
+    prismlauncher
+    zed-editor
   ];
 }

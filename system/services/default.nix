@@ -14,18 +14,34 @@
     irqbalance.enable = true;
     thermald.enable = true;
     speechd.enable = lib.mkForce false;
+
+    journald.extraConfig = ''
+      Storage=volatile
+      Compress=yes
+      SystemMaxUse=50M
+      MaxRetentionSec=7day
+    '';
   };
 
-  # Use in place of hypridle's before_sleep_cmd, since systemd does not wait for
-  # it to complete
+  systemd = {
+    extraConfig = ''
+      DefaultTimeoutStopSec=10s
+      DefaultTimeoutStartSec=10s
+    '';
+    services = {
+      systemd-udev-settle.enable = false;
+      systemd-udevd.serviceConfig.ExecStart = [
+        ""
+        "${pkgs.systemd}/lib/systemd/systemd-udevd --resolve-names=never"
+      ];
+    };
+  };
+
   powerManagement = {
     enable = true;
     cpuFreqGovernor = "schedutil";
     powerDownCommands = ''
-      # Lock all sessions
       loginctl lock-sessions
-
-      # Wait for lockscreen(s) to be up
       sleep 1
     '';
   };

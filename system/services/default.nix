@@ -23,19 +23,15 @@
     '';
   };
 
-  systemd.settings = {
-    Manager.DefaultTimeoutStopSec = "10s";
-    Manager.DefaultTimeoutStartSec = "10s";
-  };
+  systemd.settings.Manager.DefaultTimeoutStopSec = "10s";
+  systemd.settings.Manager.DefaultTimeoutStartSec = "10s";
 
-  systemd.services = {
-      systemd-udev-settle.enable = false;
-      systemd-udevd.serviceConfig.ExecStart = [
-        ""
-        "${pkgs.systemd}/lib/systemd/systemd-udevd --resolve-names=never"
-      ];
-    };
-  };
+  systemd.services.systemd-udev-settle.enable = false;
+
+  systemd.services.systemd-udevd.serviceConfig.ExecStart = [
+    ""
+    "${pkgs.systemd}/lib/systemd/systemd-udevd --resolve-names=never"
+  ];
 
   powerManagement = {
     enable = true;
